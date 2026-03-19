@@ -3,8 +3,8 @@
 
 int main() {
 
-	MyString a = "Hello       ";
-	MyString b = "World!!!!!!";
+	MyString a = "Hello ";
+	MyString b = "World!";
 
 	MyString result = a + b;
 
