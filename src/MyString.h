@@ -15,10 +15,10 @@ public:
 	MyString operator +(const MyString& other);
 	MyString& operator +=(const MyString& other);
 	// Методы
-	int strlen(const char* str);
+	size_t strlen(const char* str);
 	void Print();
+private:
 	// Переменные
 	char* str;
-private:
-	int length;
+	size_t length;
 };

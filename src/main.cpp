@@ -7,10 +7,10 @@ int main() {
 
 	MyString result = a;
 
-	MyString b1 = "World, ";
+	MyString b1;
 	MyString b2 = "Hello";
 
-	MyString b3 = b1 + b2;
+	MyString b3 = b1;
 
 	b3.Print();
 
