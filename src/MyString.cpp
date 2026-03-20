@@ -99,7 +99,18 @@ MyString MyString::operator+(const MyString& other)
 	return result;
 }
 
+// Для записи
+char& MyString::operator[](size_t index) {
+	return this->str[index];
+}
+
+// Для чтения
+char MyString::operator [](size_t index) const {
+	return str[index];
+}
+
 // Методы
+// Длина строки
 size_t MyString::strlen(const char* str) {
 	size_t len = 0;
 	for (size_t i = 0; str[i] != '\0'; i++)
@@ -109,6 +120,23 @@ size_t MyString::strlen(const char* str) {
 	return len;
 }
 
+// Для изменения
+char& MyString::at(size_t index)
+{
+	if (index >= length) throw std::out_of_range("Out of range");
+	return str[index];
+}
+
+// Для чтения
+char MyString::at(size_t index) const
+{
+	if (index >= length) throw std::out_of_range("Out of range");
+	return str[index];
+}
+
+
+
+// Операторы std::cout, std::cin
 std::ostream& operator<<(std::ostream& os, const MyString& obj) {
 	os << obj.str;
 	return os;

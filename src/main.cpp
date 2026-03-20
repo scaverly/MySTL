@@ -2,11 +2,15 @@
 
 
 int main() {
+	setlocale(LC_ALL, "ru-RU");
 
-	MyString b1 = "Hello";
-	MyString b2 = "World";
+	MyString b1 = "Million";
 
-	std::cout << (b1 != b2);
+	MyString a = "Dolor";
+
+	a[2] = 'Z';
+
+	std::cout << a;
 
 	return 0;
 }
