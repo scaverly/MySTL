@@ -14,9 +14,13 @@ public:
 	MyString& operator =(const MyString& other);
 	MyString operator +(const MyString& other);
 	MyString& operator +=(const MyString& other);
+	bool operator !=(const MyString& other);
+	bool operator ==(const MyString& other);
+	// операторы <<, >>
+	friend std::ostream& operator<<(std::ostream& os, const MyString& obj);
+	friend std::istream& operator>>(std::istream& is, MyString& obj);
 	// Методы
 	size_t strlen(const char* str);
-	void Print();
 private:
 	// Переменные
 	char* str;

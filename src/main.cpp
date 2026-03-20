@@ -3,16 +3,10 @@
 
 int main() {
 
-	MyString a = "Hello world!";
+	MyString b1 = "Hello";
+	MyString b2 = "World";
 
-	MyString result = a;
-
-	MyString b1;
-	MyString b2 = "Hello";
-
-	MyString b3 = b1;
-
-	b3.Print();
+	std::cout << (b1 != b2);
 
 	return 0;
 }

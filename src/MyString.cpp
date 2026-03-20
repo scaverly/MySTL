@@ -74,6 +74,24 @@ MyString& MyString::operator +=(const MyString& other) {
 	return *this;
 }
 
+bool MyString::operator !=(const MyString& other)
+{
+	return !(*this == other);
+}
+
+bool MyString::operator ==(const MyString& other)
+{
+	if (this->length != other.length) {
+		return false;
+	}
+	for (size_t i = 0; i < length; ++i) {
+		if (this->str[i] != other.str[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
 MyString MyString::operator+(const MyString& other)
 {
 	MyString result(*this);
@@ -91,7 +109,16 @@ size_t MyString::strlen(const char* str) {
 	return len;
 }
 
-void MyString::Print() {
-	std::cout << str << '\n' << length << '\n';
+std::ostream& operator<<(std::ostream& os, const MyString& obj) {
+	os << obj.str;
+	return os;
 }
 
+std::istream& operator>>(std::istream& is, MyString& obj) {
+	char buffer[1024]; // Временный буфер для чтения
+	is >> buffer;
+
+	obj = buffer; // перегруженный оператор =
+
+	return is;
+}
