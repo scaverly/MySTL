@@ -14,6 +14,37 @@ MyString::MyString(const char* str) {
 	}
 }
 
+MyString::MyString(size_t n, char c) {
+	length = n;
+	str = new char[length + 1];
+	for (size_t i = 0; i < length; ++i) {
+		str[i] = c;
+	}
+	str[length] = '\0';
+}
+
+MyString::MyString(char c) {
+	length = 1;
+	str = new char[length + 1] {c, '\0'};
+}
+
+MyString::MyString(const MyString& S, size_t start, size_t len) {
+	if (start >= S.length) {
+		this->length = 0;
+		this->str = new char[length + 1] {'\0'};
+	}
+	else {
+		size_t available_length = S.length - start;
+		if (len > available_length) len = available_length;
+		this->length = len;
+		this->str = new char[length + 1];
+		for (size_t i = 0; i < length; ++i) {
+			str[i] = S[start + i];
+		}
+		this->str[length] = '\0';
+	}
+}
+
 // Конструктор копирования
 MyString::MyString(const MyString& other)
 	: length(other.str ? other.length : 0)
@@ -120,21 +151,44 @@ size_t MyString::strlen(const char* str) {
 	return len;
 }
 
-// Для изменения
+// Доступ к символу (Для изменения)
 char& MyString::at(size_t index)
 {
 	if (index >= length) throw std::out_of_range("Out of range");
 	return str[index];
 }
 
-// Для чтения
+// Доступ к символу (Для чтения)
 char MyString::at(size_t index) const
 {
 	if (index >= length) throw std::out_of_range("Out of range");
 	return str[index];
 }
 
+// Проверка на пустую строку
+bool MyString::empty() const {
+	return this->length == 0;
+}
 
+// Ссылка на первый элемент (Изменение)
+char& MyString::front() { 
+	return this->str[0];
+}
+
+// Ссылка на первый элемент (Чтение)
+char MyString::front() const {
+	return this->str[0];
+}
+
+// Ссылка на последний элемент (Изменение)
+char& MyString::back() {
+	return this->str[length-1];
+}
+
+// Ссылка на последний элемент (Чтение)
+char MyString::back() const {
+	return this->str[length - 1];
+}
 
 // Операторы std::cout, std::cin
 std::ostream& operator<<(std::ostream& os, const MyString& obj) {

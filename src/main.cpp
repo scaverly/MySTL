@@ -6,11 +6,19 @@ int main() {
 
 	MyString b1 = "Million";
 
-	MyString a = "Dolor";
+	char first = b1.front();
 
-	a[2] = 'Z';
+	char last = b1.back();
 
-	std::cout << a;
+	std::cout << first << " " << last << '\n';
+
+	MyString b2 = "Dolor";
+
+	std::cout << b2.empty() << '\n';
+
+	MyString b3 = "";
+
+	std::cout << b3.empty() << '\n';
 
 	return 0;
 }

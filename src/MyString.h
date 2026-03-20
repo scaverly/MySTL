@@ -6,6 +6,9 @@ public:
 	// Конструкторы
 	MyString();
 	MyString(const char* str);
+	MyString(size_t n, char c);
+	MyString(char c);
+	MyString(const MyString& s, size_t start, size_t len);
 	// Конструктор копирования
 	MyString(const MyString& other);
 	// Деструктор
@@ -16,7 +19,7 @@ public:
 	MyString& operator +=(const MyString& other);
 	bool operator !=(const MyString& other);
 	bool operator ==(const MyString& other);
-	char& operator[](size_t index);		// Для записи
+	char& operator[](size_t index);				// Для записи
 	char operator[](size_t index) const;		// Для чтения
 	// операторы <<, >>
 	friend std::ostream& operator<<(std::ostream& os, const MyString& obj);
@@ -25,6 +28,11 @@ public:
 	size_t strlen(const char* str);
 	char& at(size_t index);              // Для изменения
 	char at(size_t index) const;         // Для чтения
+	bool empty() const;
+	char& front();						 // Для изменения
+	char front() const;					 // Для чтения
+	char& back();						 // Для Изменения
+	char back() const;					 // Для чтения
 private:
 	// Переменные
 	char* str;
