@@ -3,13 +3,16 @@
 
 int main() {
 
-	MyString a = "Hello ";
+	MyString a = "Hello world!";
 
 	MyString result = a;
 
+	MyString b1 = "World, ";
+	MyString b2 = "Hello";
 
+	MyString b3 = b1 + b2;
 
-	result.Print();
+	b3.Print();
 
 	return 0;
 }

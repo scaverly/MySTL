@@ -2,7 +2,7 @@
 
 // Конструктуры
 MyString::MyString() {
-	str = nullptr;
+	str = new char[1] {'\0'};
 	length = 0;
 }
 
@@ -25,9 +25,6 @@ MyString::MyString(const MyString& other) {
 			this->str[i] = other.str[i];
 		}
 	}
-	else {
-		this->str = nullptr;
-	}
 }
 
 // Деструктор
@@ -38,13 +35,11 @@ MyString::~MyString() {
 // Операторы
 MyString& MyString::operator=(const MyString& other)
 {
-	// Если мы присваеваем a = a
 	if (this == &other) {
 		return *this;
 	}
-	if (this->str != nullptr) {
-		delete[] str;
-	}
+
+	delete[] str;
 
 	this->length = other.length;
 	this->str = new char[length + 1];
@@ -59,22 +54,28 @@ MyString& MyString::operator=(const MyString& other)
 
 MyString MyString::operator+(const MyString& other)
 {
-	MyString newStr;
-	newStr.length = this->length + other.length;
-	newStr.str = new char[newStr.length + 1];
+	MyString result(*this);
+	result += other;
+	return result;
+}
 
-	int i = 0;
-	for (; i < this->length; i++)
-	{
-		newStr.str[i] = this->str[i];
+MyString& MyString::operator +=(const MyString& other) {
+	int newLength = this->length + other.length;
+	char* newBuffer = new char[newLength + 1];
+	for (int i = 0; i < this->length; i++) {
+		newBuffer[i] = this->str[i];
 	}
-	for (int j = 0; j < other.length; j++, i++)
-	{
-		newStr.str[i] = other.str[j];
+	for (int i = 0; i < other.length; i++) {
+		newBuffer[this->length + i] = other.str[i];
 	}
-	newStr.str[i] = '\0';
+	newBuffer[newLength] = '\0';
 
-	return newStr;
+	// Очищаем старую память и обновляем поля
+	delete[] this->str;
+	this->str = newBuffer;
+	this->length = newLength;
+
+	return *this;
 }
 
 // Методы
