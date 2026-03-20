@@ -4,9 +4,10 @@
 int main() {
 
 	MyString a = "Hello ";
-	MyString b = "World!";
 
-	MyString result = a + b;
+	MyString result = a;
+
+
 
 	result.Print();
 

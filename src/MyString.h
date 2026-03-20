@@ -6,6 +6,8 @@ public:
 	// Конструкторы
 	MyString();
 	MyString(const char* str);
+	// Конструктор копирования
+	MyString(const MyString& other);
 	// Деструктор
 	~MyString();
 	// Операторы

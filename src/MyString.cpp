@@ -16,6 +16,20 @@ MyString::MyString(const char* str) {
 	this->str[length] = '\0';
 }
 
+// Конструктор копирования
+MyString::MyString(const MyString& other) {
+	this->length = other.length;
+	if (other.str != nullptr) {
+		this->str = new char[length + 1];
+		for (int i = 0; i <= length; i++) {
+			this->str[i] = other.str[i];
+		}
+	}
+	else {
+		this->str = nullptr;
+	}
+}
+
 // Деструктор
 MyString::~MyString() {
 	delete[] this->str;
