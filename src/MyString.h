@@ -33,8 +33,15 @@ public:
 	char front() const;					 // Для чтения
 	char& back();						 // Для Изменения
 	char back() const;					 // Для чтения
+	size_t length() const;
+	size_t size() const;
+	size_t capacity() const;
+	void reserve(size_t n);
+	void shrink_to_fit();
+	void clear();
 private:
 	// Переменные
 	char* str;
-	size_t length;
+	size_t _length;
+	size_t _capacity; // Размер	выделенного буфера
 };

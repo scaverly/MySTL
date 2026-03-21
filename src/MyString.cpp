@@ -3,55 +3,61 @@
 // Конструктуры
 MyString::MyString() {
 	str = new char[1] {'\0'};
-	length = 0;
+	_length = 0;
+	_capacity = _length + 1;
 }
 
 MyString::MyString(const char* str) {
-	this->length = strlen(str);
-	this->str = new char[length + 1];
-	for (size_t i = 0; i <= length; i++) {
+	this->_length = strlen(str);
+	this->_capacity = _length + 1;
+	this->str = new char[_capacity];
+	for (size_t i = 0; i <= _length; i++) {
 		this->str[i] = str[i];
 	}
 }
 
 MyString::MyString(size_t n, char c) {
-	length = n;
-	str = new char[length + 1];
-	for (size_t i = 0; i < length; ++i) {
+	_length = n;
+	_capacity = _length + 1;
+	str = new char[_capacity];
+	for (size_t i = 0; i < _length; ++i) {
 		str[i] = c;
 	}
-	str[length] = '\0';
+	str[_length] = '\0';
 }
 
 MyString::MyString(char c) {
-	length = 1;
-	str = new char[length + 1] {c, '\0'};
+	_length = 1;
+	_capacity = _length + 1;
+	str = new char[_capacity] {c, '\0'};
 }
 
 MyString::MyString(const MyString& S, size_t start, size_t len) {
-	if (start >= S.length) {
-		this->length = 0;
-		this->str = new char[length + 1] {'\0'};
+	if (start >= S._length) {
+		this->_length = 0;
+		this->_capacity = _length + 1;
+		this->str = new char[_capacity] {'\0'};
 	}
 	else {
-		size_t available_length = S.length - start;
-		if (len > available_length) len = available_length;
-		this->length = len;
-		this->str = new char[length + 1];
-		for (size_t i = 0; i < length; ++i) {
+		size_t available__length = S._length - start;
+		if (len > available__length) len = available__length;
+		this->_length = len;
+		this->_capacity = _length + 1;
+		this->str = new char[_capacity];
+		for (size_t i = 0; i < _length; ++i) {
 			str[i] = S[start + i];
 		}
-		this->str[length] = '\0';
+		this->str[_length] = '\0';
 	}
 }
 
 // Конструктор копирования
 MyString::MyString(const MyString& other)
-	: length(other.str ? other.length : 0)
-{
+	: _length(other.str ? other._length : 0) {
+	_capacity = _length + 1;
 	if (other.str) {
-		str = new char[length + 1];
-		for (size_t i = 0; i <= length; i++) {
+		str = new char[_capacity];
+		for (size_t i = 0; i <= _length; i++) {
 			str[i] = other.str[i];
 		}
 	}
@@ -66,56 +72,54 @@ MyString::~MyString() {
 }
 
 // Операторы
-MyString& MyString::operator=(const MyString& other)
-{
+MyString& MyString::operator=(const MyString& other) {
 	if (this == &other) {
 		return *this;
 	}
 
-	char* newBuffer = new char[other.length + 1];
-	for (size_t i = 0; i < other.length; i++) {
+	char* newBuffer = new char[other._length + 1];
+	for (size_t i = 0; i < other._length; i++) {
 		newBuffer[i] = other.str[i];
 	}
-	newBuffer[other.length] = '\0';
+	newBuffer[other._length] = '\0';
 
 	delete[] this->str;
 
 	this->str = newBuffer;
-	this->length = other.length;
+	this->_length = other._length;
+	this->_capacity = _length + 1;
 
 	return *this;
 }
 
 MyString& MyString::operator +=(const MyString& other) {
-	size_t newLength = this->length + other.length;
-	char* newBuffer = new char[newLength + 1];
-	for (size_t i = 0; i < this->length; i++) {
-		newBuffer[i] = this->str[i];
-	}
-	for (size_t i = 0; i < other.length; i++) {
-		newBuffer[this->length + i] = other.str[i];
-	}
-	newBuffer[newLength] = '\0';
+	size_t new_length = this->_length + other._length;
 
-	// Очищаем старую память и обновляем поля
-	delete[] this->str;
-	this->str = newBuffer;
-	this->length = newLength;
+	// Если места не хватает
+	if (new_length + 1 > this->_capacity) {
+		reserve(new_length * 2 + 1);
+	}
+
+	// Копирование данных в конец текущего str
+	for (size_t i = 0; i < other._length; i++) {
+		this->str[this->_length + i] = other.str[i];
+	}
+
+	this->_length = new_length;
+	this->str[this->_length] = '\0';
 
 	return *this;
 }
 
-bool MyString::operator !=(const MyString& other)
-{
+bool MyString::operator !=(const MyString& other) {
 	return !(*this == other);
 }
 
-bool MyString::operator ==(const MyString& other)
-{
-	if (this->length != other.length) {
+bool MyString::operator ==(const MyString& other) {
+	if (this->_length != other._length) {
 		return false;
 	}
-	for (size_t i = 0; i < length; ++i) {
+	for (size_t i = 0; i < _length; ++i) {
 		if (this->str[i] != other.str[i]) {
 			return false;
 		}
@@ -154,40 +158,98 @@ size_t MyString::strlen(const char* str) {
 // Доступ к символу (Для изменения)
 char& MyString::at(size_t index)
 {
-	if (index >= length) throw std::out_of_range("Out of range");
+	if (index >= _length) throw std::out_of_range("Out of range");
 	return str[index];
 }
 
 // Доступ к символу (Для чтения)
 char MyString::at(size_t index) const
 {
-	if (index >= length) throw std::out_of_range("Out of range");
+	if (index >= _length) throw std::out_of_range("Out of range");
 	return str[index];
 }
 
 // Проверка на пустую строку
 bool MyString::empty() const {
-	return this->length == 0;
+	return this->_length == 0;
 }
 
 // Ссылка на первый элемент (Изменение)
 char& MyString::front() { 
+	if (empty()) throw std::out_of_range("Empty()");
 	return this->str[0];
 }
 
-// Ссылка на первый элемент (Чтение)
+// Чтение первого элемент (Чтение)
 char MyString::front() const {
+	if (empty()) throw std::out_of_range("Empty()");
 	return this->str[0];
 }
 
 // Ссылка на последний элемент (Изменение)
 char& MyString::back() {
-	return this->str[length-1];
+	if (empty()) throw std::out_of_range("Empty()");
+	return this->str[_length-1];
 }
 
-// Ссылка на последний элемент (Чтение)
+// Чтение последнего элемент (Чтение)
 char MyString::back() const {
-	return this->str[length - 1];
+	if (empty()) throw std::out_of_range("Empty()");
+	return this->str[_length - 1];
+}
+
+// Кол-во символов в строке _length(), size()
+size_t MyString::length() const
+{
+	return this->_length;
+}
+
+size_t MyString::size() const {
+	return this->_length;
+}
+
+// Кол-во выделенной памяти
+size_t MyString::capacity() const {
+	return _capacity;
+}
+
+// Резервирование памяти
+void MyString::reserve(size_t n) {
+	if (n <= _capacity) return;
+
+	char* newBuffer = new char[n];
+
+	for (size_t i = 0; i <= _length; i++) {
+		newBuffer[i] = str[i];
+	}
+
+	delete[] str;
+
+	str = newBuffer;
+	_capacity = n;
+}
+
+// Освобождение неиспользованной зарезервированной памяти
+void MyString::shrink_to_fit() {
+	if (_capacity <= _length + 1) return;
+
+	size_t new_capacity = _length + 1;
+	char* newBuffer = new char[new_capacity];
+
+	for (size_t i = 0; i <= _length; i++) {
+		newBuffer[i] = str[i];
+	}
+	delete[] str;
+	str = newBuffer;
+	_capacity = new_capacity;
+}
+
+// Очистка строки
+void MyString::clear() {
+	_length = 0;
+	if (str) {
+		str[0] = '\0';
+	}
 }
 
 // Операторы std::cout, std::cin

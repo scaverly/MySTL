@@ -2,23 +2,26 @@
 
 
 int main() {
-	setlocale(LC_ALL, "ru-RU");
+    setlocale(LC_ALL, "ru-RU");
+    MyString s("Hello");
+    std::cout << "Строка: " << s << " Capacity: " << s.capacity() << '\n';
 
-	MyString b1 = "Million";
+    s.reserve(100);
+    std::cout << "После reserve: " << s.capacity() << '\n';
 
-	char first = b1.front();
+    s += " My Name Is TTTTTTTTTTTTTT";
+    std::cout << "После +=: " << s << " Capacity " << s.capacity() << '\n';
 
-	char last = b1.back();
+    s.shrink_to_fit();
+    std::cout << "После shrink: Capacity = " << s.capacity() << ", Length = " << s.length() << std::endl;
 
-	std::cout << first << " " << last << '\n';
+    MyString s2;
+    s2 = s;
+    std::cout << "Копия: " << s2 << std::endl;
 
-	MyString b2 = "Dolor";
+    s.clear();
 
-	std::cout << b2.empty() << '\n';
-
-	MyString b3 = "";
-
-	std::cout << b3.empty() << '\n';
+    std::cout << "Оригинал после clear " << s << '\n';
 
 	return 0;
 }
