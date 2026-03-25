@@ -17,6 +17,7 @@ public:
 	MyString& operator =(const MyString& other);
 	MyString operator +(const MyString& other);
 	MyString& operator +=(const MyString& other);
+	MyString& operator +=(char c);
 	bool operator !=(const MyString& other);
 	bool operator ==(const MyString& other);
 	char& operator[](size_t index);				// Для записи
@@ -39,6 +40,12 @@ public:
 	void reserve(size_t n);
 	void shrink_to_fit();
 	void clear();
+	void push_back(char c);
+	void pop_back();
+	void append(const MyString& other);
+	void append(char c);
+	void insert(size_t pos, const MyString& other);
+	void erase(size_t pos, size_t len);
 private:
 	// Переменные
 	char* str;

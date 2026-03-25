@@ -28,7 +28,7 @@ MyString::MyString(size_t n, char c) {
 
 MyString::MyString(char c) {
 	_length = 1;
-	_capacity = _length + 1;
+	_capacity = 2;
 	str = new char[_capacity] {c, '\0'};
 }
 
@@ -108,6 +108,12 @@ MyString& MyString::operator +=(const MyString& other) {
 	this->_length = new_length;
 	this->str[this->_length] = '\0';
 
+	return *this;
+}
+
+// Для char
+MyString& MyString::operator+=(char c) {
+	this->push_back(c);
 	return *this;
 }
 
@@ -250,6 +256,80 @@ void MyString::clear() {
 	if (str) {
 		str[0] = '\0';
 	}
+}
+
+// Добавление символа в конец строки
+void MyString::push_back(char c) {
+	// Проверяем, хватает ли места для нового символа + '\0'
+	if (_length + 1 >= _capacity) {
+		reserve(_capacity * 2);
+	}
+	str[_length] = c;
+	_length++;
+	str[_length] = '\0';
+}
+
+// Удаление последнего символа
+void MyString::pop_back() {
+	if (_length > 0) {
+		_length--;
+		str[_length] = '\0';
+	}
+}
+
+
+// Добавление строки или символа
+void MyString::append(const MyString& other) {
+	*this += other;
+}
+
+// Для char
+void MyString::append(char c) {
+	this->push_back(c);
+}
+
+// Вставка подстроки в строку
+void MyString::insert(size_t pos, const MyString& other) {
+	if (pos > _length) throw std::out_of_range("Index out of range");
+
+	size_t other_len = other._length;
+	if (other_len == 0) return;
+
+	// Проверяем емкость и расширяем при необходимости
+	if (_length + other_len + 1 > _capacity) {
+		reserve((_length + other_len) * 2 + 1);
+	}
+
+	// Сдвигаем правую часть строки вправо
+	for (size_t i = _length; i >= pos; i--) {
+		str[i + other_len] = str[i];
+		if (i == 0) break;
+	}
+
+	// Копируем новую строку в образовавшееся пространство
+	for (size_t i = 0; i < other_len; i++) {
+			str[pos + i] = other.str[i];
+	}
+
+	// Обновляем длину
+	_length += other_len;
+}
+
+// Удаление части строки
+void MyString::erase(size_t pos, size_t len) {
+	if (pos >= _length) throw std::out_of_range("Erase position out of range");
+	
+	if (pos + len > _length) {
+		len = _length - pos;
+	}
+
+	if (len == 0) return;
+
+	for (size_t i = pos; i <= _length - len; i++) {
+		str[i] = str[i + len];
+	}
+
+	_length -= len;
 }
 
 // Операторы std::cout, std::cin
